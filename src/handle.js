@@ -8,6 +8,7 @@ const {
     utils,
     fileSystem
 } = require("exp-utils");
+const Portfolio = require('./portfolio');
 const configPath = "./config/config.json";
 
 let config = fileSystem.readAsJsonSync(configPath);
@@ -37,7 +38,11 @@ exports.setWritePath = function (params, next) {
 };
 
 exports.startConvert = function (params, next) {
-    
+    console.log(params);
+    let portfolio = Portfolio.create(config.readPath);
+    let names = portfolio.getDocumentsName();   
+    names.forEach(function (name) {    
 
+    });
     utils.invoke(next);
 };

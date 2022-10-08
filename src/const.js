@@ -13,5 +13,11 @@ module.exports = {
     TABLE: {
         REF_NAME: "!ref",       // Col&Raw Range
         MERGES_NAME: "!merges"  // Cell Merges
-    }
+    },
+    UNIT: {
+        VALUE: 0,  // string/number/float/bool..
+        ARRAY: 1,  // [SheetName:A-Z(Column letter)]
+        OBJECT: 2  // {SheetName:2-n(Line number)}
+    },
+    EXTENDS: [".xls", ".xlsx", ".xlsm", ".xlsb"] 
 };
