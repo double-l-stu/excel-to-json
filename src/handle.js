@@ -9,6 +9,7 @@ const {
     utils,
     fileSystem
 } = require("exp-utils");
+const CONST = require('./const');
 const Portfolio = require('./portfolio');
 const configPath = "./config/config.json";
 
@@ -45,7 +46,7 @@ exports.setWritePath = function (params, next) {
 
 exports.arrayConvert = function (params, next) {
     let portfolio = Portfolio.create(config.readPath);
-    if (params.length <= 0) {  
+    if (params.length <= 0) {
         params = portfolio.getDocumentsName();
     }
     params.forEach(function (name) {
@@ -59,7 +60,7 @@ exports.arrayConvert = function (params, next) {
 
 exports.objectConvert = function (params, next) {
     let portfolio = Portfolio.create(config.readPath);
-    if (params.length <= 0) {  
+    if (params.length <= 0) {
         params = portfolio.getDocumentsName();
     }
     params.forEach(function (name) {
@@ -67,6 +68,18 @@ exports.objectConvert = function (params, next) {
         let filename = path.join(config.writePath, name) + '.json';
         fileSystem.writeSync(filename, portfolio.doc2Object(name));
         console.log('Exported document: ' + filename);
+    });
+    utils.invoke(next);
+};
+
+exports.listExcelFiles = function (params, next) {
+    CONST.EXTENDS.forEach(function (exd) {
+        let arr = fileSystem.filesInDirSync(config.readPath, exd, true);
+        if (arr.length > 0) {
+            arr.forEach((e) => {
+                console.log(e.name);
+            });
+        }
     });
     utils.invoke(next);
 };
