@@ -97,12 +97,17 @@ class Entity {
     };
 
     /**
-     * Converts to json object.
+     * Converts to json array.
      *
-     * @return {Object} [{...}]
+     * @param {Boolean} header if excel has a header line
+     * @return {Array} [[...],[...],...]
      */
-    toJson() {
-        return xlsx.utils.sheet_to_json(this.src);
+    toJson(header) {
+        let arr = xlsx.utils.sheet_to_json(this.src, {header : 1});
+        if (header) {
+            arr.splice(0, 1);
+        }
+        return arr;
     };
 }
 

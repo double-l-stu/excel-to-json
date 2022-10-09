@@ -147,13 +147,11 @@ class Entity {
     doc2Array(n) {
         if (this.hasDocument(n)) {
             let doc = this.getDocument(n);
-            let json = doc.table2Json(0);
-            let length = json.length;
-            // check every row of the basic table
-            for (let i = 0; i < length; i++) {
+            let json = doc.table2Json(0, true);
+            // parse unit(cell) type([SheetName:A-Z],{SheetName:2-n})
+            for (let i = 0; i < json.length; i++) {
                 let keys = Object.keys(json[i]);
-                let count = keys.length;
-                for (let j = 0; j < count; j++) {
+                for (let j = 0; j < keys.length; j++) {
                     let key = keys[j];
                     let info = getUnitInfo(json[i][key]);
                     if (info.sheet === undefined) {
@@ -165,8 +163,7 @@ class Entity {
                     }
                     if (info.unit === CONST.UNIT.ARRAY) {
                         let table = doc.getTable(info.sheet);
-                        let index = 0,
-                            arr = [];
+                        let index = 0, arr = [];
                         // get the whole col's value
                         while (table.hasField(info.col, index)) {
                             let v = table.getValue(info.col, index++);
@@ -174,15 +171,17 @@ class Entity {
                         }
                         json[i][key] = arr;
                     } else if (info.unit === CONST.UNIT.OBJECT) {
-                        let table = doc.table2Json(info.sheet);
+                        let table = doc.table2Json(info.sheet, false);
                         // (row = 0: keys),index offset = 1
                         json[i][key] = table[info.row - 2];
                     }
                 }
             }
             return json;
+        } else {
+            console.warn(`excel(${n}) not found.`);
         }
-        return null;
+        return [];
     };
 
     /**
@@ -199,27 +198,24 @@ class Entity {
      *           p1:{id:p1,name:"queen",skills:[2,3,4],describe:{chinese:"公主",english:"Queen"}}}
      *
      * @param {String} n document name
-     * @return {Object} the json object/null
+     * @return {Object} the json object
      */
     doc2Object(n) {
         let arr = this.doc2Array(n);
-        // null/empty data
-        if (!arr || arr.length <= 0) {
-            console.warn("empty/null data: " + n);
-            return null;
+        // empty data
+        if (arr.length <= 0) {
+            console.warn("empty data: " + n);
+            return {};
         }
         // get the basic key
         let keys = Object.keys(arr[0]);
         // not object struct
         if (keys.length < 2) {
             console.warn("not object struct: " + n);
-            return null;
+            return {};
         }
-        let rt = {
-            nor: {},
-            rep: []
-        }, bk = keys[0];
-        console.log("basic key: " + bk);
+        let rt = {nor: {}, rep: []}, bk = keys[0];
+        //console.log("basic key: " + bk);
         arr.forEach(function (item) {
             let k = item[bk];
             if (!rt.nor.hasOwnProperty(k)) {
@@ -228,7 +224,13 @@ class Entity {
                 rt.rep.push(item);
             }
         });
-        return rt;
+        // simplified data
+        utils.objectSimplify(rt.nor);
+        // repetitive ids
+        if (rt.rep.length > 0) {
+            console.warn("repetitive: " + rt.rep);
+        }
+        return rt.nor;
     };
 
 }

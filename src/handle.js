@@ -4,11 +4,11 @@
  * @Date: 2022-10-08 21:29:07
  */
 
+const path = require("path");
 const {
     utils,
     fileSystem
 } = require("exp-utils");
-const localutils = require('./utils')
 const Portfolio = require('./portfolio');
 const configPath = "./config/config.json";
 
@@ -21,9 +21,10 @@ exports.setReadPath = function (params, next) {
     if (params.length > 0) {
         config.readPath = params[0];
         fileSystem.writeSync(configPath, config);
+        console.log("Update read path to: " + config.readPath);
     }
     else {
-        console.log("The right command: -r your-path");
+        console.warn("The right command: -r your-path");
     }
     utils.invoke(next);
 };
@@ -32,34 +33,37 @@ exports.setWritePath = function (params, next) {
     if (params.length > 0) {
         config.writePath = params[0];
         fileSystem.writeSync(configPath, config);
+        console.log("Update write path to: " + config.writePath);
     } else {
-        console.log("The right command: -w your-path");
+        console.warn("The right command: -w your-path");
     }
     utils.invoke(next);
 };
 
-exports.startConvert = function (params, next) {
+exports.arrayConvert = function (params, next) {
     console.log(params);
     let portfolio = Portfolio.create(config.readPath);
     let names = portfolio.getDocumentsName();
     names.forEach(function (name) {
         console.log('Converting document: ' + name);
-        let data = portfolio.doc2Object(name);
-        // simplified data
-        if (data) {
-            localutils.objectSimplify(data.nor);
-        }
-        // save to file
-        if (data) {
-            fileSystem.writeSync(config.writePath + name + '.json', data.nor);
-            if (data.rep.length > 0) {
-                console.warn('repeating field:');
-                console.warn(data.rep);
-            }
-            console.log('Exported document: ' + name);
-        } else {
-            console.warn('Invalid excel file: ' + name);
-        }
+        fileSystem.makeDirsSync(config.writePath);
+        let filename = path.join(config.writePath, name) + '.json';
+        fileSystem.writeSync(filename, portfolio.doc2Array(name));
+        console.log('Exported document: ' + filename);
+    });
+    utils.invoke(next);
+};
+
+exports.objectConvert = function (params, next) {
+    console.log(params);
+    let portfolio = Portfolio.create(config.readPath);
+    let names = portfolio.getDocumentsName();
+    names.forEach(function (name) {
+        console.log('Converting document: ' + name);
+        fileSystem.makeDirsSync(config.writePath);
+        let filename = path.join(config.writePath, name) + '.json';
+        fileSystem.writeSync(filename, portfolio.doc2Object(name));
+        console.log('Exported document: ' + filename);
     });
     utils.invoke(next);
 };

@@ -81,14 +81,25 @@ class Entity {
      * Converts a table to json object.
      *
      * @param {String/Number} n table name/table index
-     * @return {Object} JSON/null
+     * @param {Boolean} h has header or not
+     * @return {Array} JSON array
      */
-    table2Json(n) {
+    table2Json(n, h) {
         let table = this.getTable(n);
         if (table) {
-            return table.toJson();
+            let tablejson = table.toJson(h);
+            let basickeys = tablejson.splice(0, 1)[0];
+            let json = [];
+            for (let i = 0; i < tablejson.length; i++) {
+                let obj = {};
+                for (let j = 0; j < basickeys.length; j++) {
+                    obj[basickeys[j]] = tablejson[i][j];
+                }
+                json.push(obj);
+            }
+            return json;
         }
-        return null;
+        return [];
     };
 
     /**
@@ -97,11 +108,7 @@ class Entity {
      * @return {Object} {sheet1...sheetn}
      */
     toJson() {
-        let json = {};
-        this.tables.forEach(function (table, key) {
-            json[key] = table.toJson();
-        });
-        return json;
+
     };
 }
 
