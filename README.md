@@ -15,7 +15,7 @@
 <a href="./excels/template.xlsx"><img src="./images/sheets.jpg" height="512"></a>
 
 
-### 1. Array export     
+#### 1. Array export     
 convert all: `-a`, convert specified files: `-a excel-filename1 excel-filename2`:
 ``` javescript      
 [
@@ -38,7 +38,7 @@ convert all: `-a`, convert specified files: `-a excel-filename1 excel-filename2`
   ...
 ]
 ```     
-### 2. Object export     
+#### 2. Object export     
 convert all: `-o`, convert specified files: `-o excel-filename1 excel-filename2`:
 ``` javescript   
 {
