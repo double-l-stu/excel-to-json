@@ -17,6 +17,8 @@ let config = fileSystem.readAsJsonSync(configPath);
 console.log(`Read Path: ${config.readPath}`);
 console.log(`Write Path: ${config.writePath}\n`);
 
+fileSystem.makeDirsSync(config.writePath);
+
 exports.setReadPath = function (params, next) {
     if (params.length > 0) {
         config.readPath = params[0];
@@ -33,6 +35,7 @@ exports.setWritePath = function (params, next) {
     if (params.length > 0) {
         config.writePath = params[0];
         fileSystem.writeSync(configPath, config);
+        fileSystem.makeDirsSync(config.writePath);
         console.log("Update write path to: " + config.writePath);
     } else {
         console.warn("The right command: -w your-path");
@@ -41,7 +44,6 @@ exports.setWritePath = function (params, next) {
 };
 
 exports.arrayConvert = function (params, next) {
-    fileSystem.makeDirsSync(config.writePath);
     let portfolio = Portfolio.create(config.readPath);
     if (params.length <= 0) {  
         params = portfolio.getDocumentsName();
@@ -56,7 +58,6 @@ exports.arrayConvert = function (params, next) {
 };
 
 exports.objectConvert = function (params, next) {
-    fileSystem.makeDirsSync(config.writePath);
     let portfolio = Portfolio.create(config.readPath);
     if (params.length <= 0) {  
         params = portfolio.getDocumentsName();
