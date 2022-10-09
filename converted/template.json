@@ -1,0 +1,53 @@
+[
+    {
+        "id": "p0",
+        "name": "prince",
+        "locked": true,
+        "power": 99.8,
+        "skills": [
+            0,
+            1,
+            2,
+            3,
+            5
+        ],
+        "describes": {
+            "english": "prince",
+            "simplified": "王子",
+            "japanese": "プリンス"
+        }
+    },
+    {
+        "id": "p1",
+        "name": "princess",
+        "locked": true,
+        "power": 99.7,
+        "skills": [
+            4,
+            5,
+            6,
+            7
+        ],
+        "describes": {
+            "english": "princess",
+            "simplified": "公主",
+            "japanese": "プリンセス"
+        }
+    },
+    {
+        "id": "p2",
+        "name": "guard",
+        "locked": false,
+        "power": 90.2,
+        "skills": [
+            8,
+            9,
+            10
+        ],
+        "describes": {
+            "english": "guard",
+            "simplified": "护卫",
+            "japanese": "ガード"
+        }
+    }
+]
