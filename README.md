@@ -60,8 +60,8 @@ convert all: `-o`, convert specified files: `-o excel-filename1 excel-filename2`
 }
 ```     
 ## Special configuration description      
-1. `[SheetName:A]` represents an array field       
-2. `{Describe:2}` represents an object field       
+1. `[SheetName:A]` represents an array field parse from other sheet(the `A` column)        
+2. `{SheetName:2}` represents an object field parse from other sheet(the `2` line)        
 Browse `template.xlsx` in excels folder for detail     
 
 ## [Unity client](https://github.com/yunmin97/simple-json)      
