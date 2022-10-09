@@ -1,4 +1,4 @@
-{    
-    "readPath": "excels",
-    "writePath": "converted"
+{
+    "readPath": "./excels",
+    "writePath": "./converted"
 }
