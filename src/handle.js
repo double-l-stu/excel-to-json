@@ -41,12 +41,13 @@ exports.setWritePath = function (params, next) {
 };
 
 exports.arrayConvert = function (params, next) {
-    console.log(params);
+    fileSystem.makeDirsSync(config.writePath);
     let portfolio = Portfolio.create(config.readPath);
-    let names = portfolio.getDocumentsName();
-    names.forEach(function (name) {
+    if (params.length <= 0) {  
+        params = portfolio.getDocumentsName();
+    }
+    params.forEach(function (name) {
         console.log('Converting document: ' + name);
-        fileSystem.makeDirsSync(config.writePath);
         let filename = path.join(config.writePath, name) + '.json';
         fileSystem.writeSync(filename, portfolio.doc2Array(name));
         console.log('Exported document: ' + filename);
@@ -55,12 +56,13 @@ exports.arrayConvert = function (params, next) {
 };
 
 exports.objectConvert = function (params, next) {
-    console.log(params);
+    fileSystem.makeDirsSync(config.writePath);
     let portfolio = Portfolio.create(config.readPath);
-    let names = portfolio.getDocumentsName();
-    names.forEach(function (name) {
+    if (params.length <= 0) {  
+        params = portfolio.getDocumentsName();
+    }
+    params.forEach(function (name) {
         console.log('Converting document: ' + name);
-        fileSystem.makeDirsSync(config.writePath);
         let filename = path.join(config.writePath, name) + '.json';
         fileSystem.writeSync(filename, portfolio.doc2Object(name));
         console.log('Exported document: ' + filename);
