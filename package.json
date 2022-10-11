@@ -16,7 +16,7 @@
   ],
   "dependencies": {
     "xlsx": "^0.18.5",
-    "exp-utils": "^2.2.6"
+    "exp-utils": "^2.2.7"
   },
   "keywords": [
     "utils"
