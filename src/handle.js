@@ -24,6 +24,7 @@ exports.setReadPath = function (params, next) {
     if (params.length > 0) {
         config.readPath = params[0];
         fileSystem.writeSync(configPath, config);
+        fileSystem.makeDirsSync(config.readPath);
         console.log("Update read path to: " + config.readPath);
     }
     else {
