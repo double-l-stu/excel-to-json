@@ -9,6 +9,8 @@ const {
 } = require("exp-utils");
 const handle = require("./src/handle");
 
+handle.initConfig(process.argv[2], process.argv[3]);
+
 cmdSystem.add("-a", handle.arrayConvert, "Convert excel to json array(eg: -c or -c file1 file2...)");
 cmdSystem.add("-o", handle.objectConvert, "Convert excel to json object(eg: -c or -c file1 file2...)");
 cmdSystem.add("-r", handle.setReadPath, "Set read directory of excel files(eg: -r your-path)");

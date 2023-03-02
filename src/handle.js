@@ -15,10 +15,26 @@ const configPath = "./config/config.json";
 
 let config = fileSystem.readAsJsonSync(configPath);
 
-console.log(`Read Path: ${config.readPath}`);
-console.log(`Write Path: ${config.writePath}\n`);
-
 fileSystem.makeDirsSync(config.writePath);
+
+exports.initConfig = function (readpath, writepath) {
+    let hasModified = false;
+    if (readpath !== undefined && config.readPath !== readpath) {
+        config.readPath = readpath;
+        hasModified = true;
+    }
+    if (writepath !== undefined && config.writePath !== writepath) {
+        config.writePath = writepath;
+        hasModified = true;
+    }
+    if (hasModified === true) {
+        fileSystem.writeSync(configPath, config);
+        fileSystem.makeDirsSync(config.readPath);
+        fileSystem.makeDirsSync(config.writePath);
+    }
+    console.log(`Read Path: ${config.readPath}`);
+    console.log(`Write Path: ${config.writePath}\n`);
+}
 
 exports.setReadPath = function (params, next) {
     if (params.length > 0) {
