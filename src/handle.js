@@ -19,16 +19,15 @@ fileSystem.makeDirsSync(config.writePath);
 
 exports.initConfig = function (readpath, writepath) {
     let hasModified = false;
-    if (readpath !== undefined && config.readPath !== readpath) {
+    if (readpath !== undefined && readpath.length > 1 && config.readPath !== readpath) {
         config.readPath = readpath;
         hasModified = true;
     }
-    if (writepath !== undefined && config.writePath !== writepath) {
+    if (writepath !== undefined && writepath.length > 1 && config.writePath !== writepath) {
         config.writePath = writepath;
         hasModified = true;
     }
     if (hasModified === true) {
-        fileSystem.writeSync(configPath, config);
         fileSystem.makeDirsSync(config.readPath);
         fileSystem.makeDirsSync(config.writePath);
     }
